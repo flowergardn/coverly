@@ -221,26 +221,6 @@ async function upload(bucketName: string, key: string, filePath: string) {
   }
 }
 
-function extractKeyFromUrl(url: string): string {
-  try {
-    const urlObj = new URL(url);
-    if (!urlObj.hostname.includes("soundcloud.com")) {
-      throw new Error("Not a SoundCloud URL");
-    }
-
-    const path = urlObj.pathname.substring(1);
-    if (!path) {
-      throw new Error("Invalid SoundCloud URL path");
-    }
-
-    return path;
-  } catch (error) {
-    throw new Error(
-      `Invalid URL format: ${error instanceof Error ? error.message : "Unknown error"}`,
-    );
-  }
-}
-
 async function checkObjectExists(
   bucketName: string,
   key: string,
@@ -290,37 +270,22 @@ const router = new Elysia()
           return status(400, { error: "No URL provided" });
         }
 
-        const urlKey = extractKeyFromUrl(body.url);
-        console.log(`Extracted key: ${urlKey}`);
-
         const bucketName = env.R2_BUCKET_NAME;
         const r2Key = `${nanoid(12)}.mp3`;
 
-        console.log(`Checking if object exists: ${r2Key}`);
-        const existingObject = await checkObjectExists(bucketName, r2Key);
-
-        if (existingObject) {
-          console.log(`Object already exists, returning cached version`);
-          requestsTotal.labels("success", "true").inc();
-          return {
-            success: true,
-            message: "Returned cached clip",
-            cached: true,
-            clip: {
-              r2Key,
-            },
-          };
-        }
-
-        console.log(`Object doesn't exist, processing new clip...`);
+        console.log(`processing new clip...`);
 
         const tempAudioFile = `temp_${Date.now()}.mp3`;
         const outputFile = `output_${Date.now()}.mp3`;
 
+        console.log("updating memory");
+
         // ppdate memory before intensive operations
         updateMemoryMetrics();
 
+        console.log("getting stream");
         const stream = await download(query.clientId, body.url);
+        console.log("downloading audio");
         await downloadAudio(stream, tempAudioFile);
 
         console.log("Verifying downloaded file...");

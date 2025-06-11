@@ -2,6 +2,7 @@
   "name": "@coverly/api",
   "version": "1.0.50",
   "scripts": {
+    "start": "bun run src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts"
   },
@@ -11,6 +12,7 @@
     "elysia": "latest",
     "ky": "^1.8.1",
     "m3u8stream": "^0.8.6",
+    "nanoid": "^5.1.5",
     "prom-client": "^15.1.3",
     "zod": "^3.25.57"
   },
