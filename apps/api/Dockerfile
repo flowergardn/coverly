@@ -3,14 +3,17 @@ WORKDIR /app
 
 RUN apk add --no-cache ffmpeg
 
-COPY apps/coverly-api/package.json apps/coverly-api/bun.lock* ./
+COPY apps/api/package.json ./apps/api/
+COPY apps/api/bun.lock* ./apps/api/
 
 RUN bun install
 
-COPY apps/coverly-api/src/ ./src/
+COPY apps/api/* ./apps/api/
 
 RUN chown -R bun:bun /app
 USER bun
+
+WORKDIR /app/apps/api
 
 EXPOSE 3000
 
