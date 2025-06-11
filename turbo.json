@@ -10,14 +10,14 @@
   ],
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build",
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "env": [
+        "SKIP_ENV_VALIDATION",
         "SPOTIFY_CLIENT_ID",
         "SPOTIFY_CLIENT_SECRET",
         "ADMIN_KEY"
-      ],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
-      "env": ["SKIP_ENV_VALIDATION"]
+      ]
     },
     "dev": {
       "cache": false,
