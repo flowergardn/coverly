@@ -1,0 +1,8 @@
+version: "3"
+services:
+  coverly-api:
+    container_name: coverly-api
+    image: ghcr.io/flowergardn/coverly/api:latest
+    env_file:
+      - ./.env
+    restart: always

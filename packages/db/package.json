@@ -1,0 +1,17 @@
+{
+  "name": "@coverly/db",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
+  },
+  "peerDependencies": {
+    "drizzle-orm": "*",
+    "postgres": "*"
+  }
+}
