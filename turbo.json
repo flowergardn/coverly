@@ -1,10 +1,21 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
-  "globalPassThroughEnv": ["DATABASE_URL", "SKIP_ENV_VALIDATION"],
+  "globalPassThroughEnv": [
+    "DATABASE_URL",
+    "SKIP_ENV_VALIDATION",
+    "SPOTIFY_CLIENT_ID",
+    "SPOTIFY_CLIENT_SECRET",
+    "ADMIN_KEY"
+  ],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build",
+        "SPOTIFY_CLIENT_ID",
+        "SPOTIFY_CLIENT_SECRET",
+        "ADMIN_KEY"
+      ],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"],
       "env": ["SKIP_ENV_VALIDATION"]
     },
