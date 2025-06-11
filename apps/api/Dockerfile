@@ -1,19 +1,21 @@
 FROM oven/bun:1-alpine AS base
-WORKDIR /app
+
+WORKDIR /app/apps/api
 
 RUN apk add --no-cache ffmpeg
 
-COPY apps/api/package.json ./apps/api/
-COPY apps/api/bun.lock* ./apps/api/
+COPY apps/api/package.json ./package.json
+COPY apps/api/bun.lock* ./bun.lock*
 
 RUN bun install
 
-COPY apps/api/* ./apps/api/
+COPY apps/api/src/ ./src/
+COPY apps/api/tsconfig.json ./tsconfig.json
 
-RUN chown -R bun:bun /app
+COPY packages/ ./packages/
+
+RUN chown -R bun:bun /app/apps/api
 USER bun
-
-WORKDIR /app/apps/api
 
 EXPOSE 3000
 
